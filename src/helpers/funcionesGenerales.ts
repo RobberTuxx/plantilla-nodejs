@@ -1,16 +1,17 @@
 import * as jwt from 'jwt-simple'
 import * as moment from "moment";
 
-export const status = {
-    success: 200,
-    error: 500,
-    notfound: 404,
-    unauthorized: 401,
-    conflict: 409,
-    created: 201,
-    bad: 400,
-    nocontent: 204,
-    forbidden: 403,
+export enum status {
+    success = 200,
+    error= 500,
+    notfound= 404,
+    unauthorized= 401,
+    conflict= 409,
+    created= 201,
+    bad= 400,
+    nocontent= 204,
+    forbidden= 403,
+    unprocesable= 422,
 };
 
 export function respuesta(response: any, codigo: number, mensaje: string, data: object) {
@@ -30,6 +31,25 @@ export function generarToken(datos: any ): string {
 }
 
 export function tokenExpirado(token: string): boolean {
-    const payload = jwt.decode(token.split(" ")[1], 'estaEsUnaPrueba',true);
-    return payload.exp < moment().unix;
+    let payload = {};
+    try {
+        payload = jwt.decode(token.split(" ")[1], 'estaEsUnaPrueba');
+    } catch (e) {
+        return true;
+    }
+    return payload['exp'] < moment().unix;
+}
+
+export function eliminarAcentos(palabra: string) {
+    const accents =
+        "ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž";
+    const accentsOut =
+        "AAAAAAaaaaaaBOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
+    return palabra
+        .split("")
+        .map((letter, index) => {
+            const accentIndex = accents.indexOf(letter);
+            return accentIndex !== -1 ? accentsOut[accentIndex] : letter;
+        })
+        .join("");
 }
