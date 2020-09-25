@@ -42,5 +42,4 @@ export class Empresa extends BaseEntity {
             this.usuarios = empresa.usuarios
         }
     }
-
 }

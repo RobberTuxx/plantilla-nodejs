@@ -25,4 +25,12 @@ export class TelefonoBloqueado extends BaseEntity{
     updatedAt: Date
     @DeleteDateColumn()
     deletedAt: Date
+
+    constructor(telefonoBloqueado?) {
+        super();
+        if (telefonoBloqueado){
+            this.telefono = telefonoBloqueado.telefono
+            this.empresa = new Empresa()
+        }
+    }
 }

@@ -2,6 +2,7 @@ import {Connection, createConnection} from "typeorm";
 import {Rol} from "../entity/Rol";
 import {Usuario} from "../entity/Usuario";
 import * as bcrypt from 'bcrypt';
+import {Empresa} from "../entity/Empresa";
 
 class Inicializacion {
     public connection: Connection;
@@ -38,15 +39,23 @@ class Inicializacion {
                 nombre: "COLABORADOR"
             }).save()
             /*################ USUARIO #####################*/
-            await Usuario.create({
-                nombre: "Karim",
-                apellidoPaterno: "Ricardez",
-                apellidoMaterno: "Ortiz",
-                password: await bcrypt.hash("temporal", 10),
-                email: "karimnot@gmail.com",
-                pushToken: "",
-                telefono: "",
-                rol: [rolSuper],
+            await Empresa.create({
+                nombre: "karimnot",
+                usuarios: [
+                    {
+                        email: "karimnot@gmail.com",
+                        password:  await bcrypt.hash("temporal", 10),
+                        telefono: "9515078041",
+                        nombre: "Karim",
+                        apellidoPaterno: "Ricardez",
+                        apellidoMaterno: "Ortiz",
+                        rol: [rolSuper],
+                    }
+                ],
+                configuracionEmpresa: {
+                    whatsapp: "9515078041",
+                    mensajesComprados: 50
+                }
             }).save()
         }
     }

@@ -20,11 +20,7 @@ export function respuesta(response: any, codigo: number, mensaje: string, data: 
 
 export function generarToken(datos: any ): string {
     return jwt.encode({
-        sub: {
-            "nombre": datos.nombre,
-            "email": datos.email,
-            "fechaNacimiento": datos.fechaNacimiento,
-        },
+        sub: datos,
         iat: moment().unix(),
         exp: moment().unix() + (60 * 60)
     }, 'estaEsUnaPrueba','HS512');
@@ -38,6 +34,16 @@ export function tokenExpirado(token: string): boolean {
         return true;
     }
     return payload['exp'] < moment().unix;
+}
+
+export function obtenerIDEmpresa(token: string): string {
+    let payload = {};
+    try {
+        payload = jwt.decode(token.split(" ")[1], 'estaEsUnaPrueba');
+    } catch (e) {
+        throw e
+    }
+    return payload['sub'].empresa.id
 }
 
 export function eliminarAcentos(palabra: string) {
