@@ -24,7 +24,7 @@ export class Empresa extends BaseEntity {
     telefonoBloqueados: TelefonoBloqueado[]
     @OneToMany(type => Usuario, usuario => usuario.empresa, {cascade: true})
     usuarios: Usuario[]
-    @OneToOne(type => ConfiguracionEmpresa, configuracionEmpresa => configuracionEmpresa.empresa,{cascade:true})
+    @OneToOne(type => ConfiguracionEmpresa,{cascade: true})
     @JoinColumn()
     configuracionEmpresa: ConfiguracionEmpresa
     @CreateDateColumn()
@@ -33,4 +33,14 @@ export class Empresa extends BaseEntity {
     updatedAt: Date
     @DeleteDateColumn()
     deletedAt: Date
+
+    constructor(empresa?) {
+        super();
+        if (empresa){
+            this.nombre = empresa.nombre
+            this.configuracionEmpresa = empresa.configuracionEmpresa
+            this.usuarios = empresa.usuarios
+        }
+    }
+
 }

@@ -4,7 +4,7 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
-    JoinColumn,
+    JoinColumn, JoinTable,
     ManyToMany, ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
@@ -22,7 +22,7 @@ export class Usuario extends BaseEntity implements UsuarioInterface {
     email: string
     @Column()
     password: string
-    @Column()
+    @Column({nullable: true})
     pushToken: string
     @Column()
     telefono: string
@@ -33,7 +33,7 @@ export class Usuario extends BaseEntity implements UsuarioInterface {
     @Column()
     apellidoMaterno: string
     @ManyToMany(type => Rol)
-    @JoinColumn()
+    @JoinTable()
     rol: Rol[]
     @ManyToOne(type => Empresa, empresa=> empresa.usuarios)
     empresa: Empresa
@@ -47,11 +47,14 @@ export class Usuario extends BaseEntity implements UsuarioInterface {
     constructor(usuario?) {
         super();
         if (usuario) {
-            this.id = usuario.id
-            this.pushToken = usuario.pushToken
+            this.email = usuario.email
+            this.password = usuario.password
             this.telefono = usuario.telefono
             this.nombre = usuario.nombre
-            this.email = usuario.email
+            this.apellidoPaterno = usuario.apellidoPaterno
+            this.apellidoMaterno = usuario.apellidoMaterno
+            this.empresa = usuario.empresa
+
         }
     }
 }

@@ -19,7 +19,6 @@ export class ConfiguracionEmpresa extends BaseEntity{
     @Column()
     mensajesComprados: number
     @OneToOne(type => Empresa, empresa => empresa.configuracionEmpresa)
-    @JoinColumn()
     empresa: Empresa
     @CreateDateColumn()
     createdAt: Date

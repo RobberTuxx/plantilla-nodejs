@@ -15,7 +15,7 @@ export enum status {
 };
 
 export function respuesta(response: any, codigo: number, mensaje: string, data: object) {
-    response.status(codigo).send({mensaje: mensaje, data: data});
+    response.status(codigo).send({mensaje: mensaje, data: data, codigo: codigo});
 }
 
 export function generarToken(datos: any ): string {
@@ -41,15 +41,10 @@ export function tokenExpirado(token: string): boolean {
 }
 
 export function eliminarAcentos(palabra: string) {
-    const accents =
-        "ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž";
-    const accentsOut =
-        "AAAAAAaaaaaaBOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
-    return palabra
-        .split("")
-        .map((letter, index) => {
+    const accents = "ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž";
+    const accentsOut = "AAAAAAaaaaaaBOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
+    return palabra.split("").map((letter, index) => {
             const accentIndex = accents.indexOf(letter);
             return accentIndex !== -1 ? accentsOut[accentIndex] : letter;
-        })
-        .join("");
+        }).join("");
 }

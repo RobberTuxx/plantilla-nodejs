@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import {buscarUsuario} from "../models/usuario.model";
 
 export async function logIn(request, response) {
+    console.log('we')
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
         return respuesta(response, status.unprocesable, 'Faltan datos por completar', {errors: errors.array()});
@@ -21,7 +22,7 @@ export async function logIn(request, response) {
                 })
             }
         }
-        return respuesta(response, status.bad, 'El usuario y/o contraseña ingresada, es incorrecto', {})
+        return respuesta(response, status.bad, 'El usuario y/o contraseña ingresada, son incorrectos', {})
     } catch (e) {
         return respuesta(response, status.error, 'Error en servidor', {reason: e + ''});
     }
