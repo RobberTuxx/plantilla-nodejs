@@ -3,14 +3,15 @@ import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    Entity, JoinColumn, OneToOne,
+    Entity,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import {Empresa} from "./Empresa";
 
 @Entity()
-export class ConfiguracionEmpresa extends BaseEntity{
+export class ConfiguracionEmpresa extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number
