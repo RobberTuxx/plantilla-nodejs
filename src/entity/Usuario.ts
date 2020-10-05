@@ -6,7 +6,7 @@ import {
     Entity,
     JoinColumn, JoinTable,
     ManyToMany, ManyToOne,
-    PrimaryGeneratedColumn,
+    PrimaryGeneratedColumn, Unique,
     UpdateDateColumn
 } from "typeorm";
 import {UsuarioInterface} from "../Interfaces/Usuario.Interface";
@@ -14,6 +14,7 @@ import {Rol} from "./Rol";
 import {Empresa} from "./Empresa";
 
 @Entity()
+@Unique('correo',['email'])
 export class Usuario extends BaseEntity implements UsuarioInterface {
 
     @PrimaryGeneratedColumn()

@@ -25,5 +25,10 @@ export class Rol extends BaseEntity {
     deletedAt: Date
     @UpdateDateColumn()
     updatedAt: Date
-
+    constructor(rol?) {
+        super();
+        if (rol){
+            this.id = rol.id
+        }
+    }
 }

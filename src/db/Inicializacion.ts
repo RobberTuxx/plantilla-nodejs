@@ -1,6 +1,5 @@
 import {Connection, createConnection} from "typeorm";
 import {Rol} from "../entity/Rol";
-import {Usuario} from "../entity/Usuario";
 import * as bcrypt from 'bcrypt';
 import {Empresa} from "../entity/Empresa";
 

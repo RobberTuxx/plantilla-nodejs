@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv'
+dotenv.config();
 import * as express from 'express';
 import * as morgan from 'morgan'
 import * as cookieParser from 'cookie-parser';
@@ -9,11 +11,13 @@ import {routerEmpresa} from "./routes/empresa.route";
 import {verificarToken} from "./middleware/verificarAutenticación";
 import {routerTelefonos} from "./routes/telefonoBloqueado.route";
 import {routerConfiguracion} from "./routes/configuracionEmpresa.route";
+import NexmoClass from "./Services/Nexmo";
 
 const app = express();
 
 //iniciando la base de datos
 const bd = new Inicializacion();
+const nexmo = NexmoClass.getInstance()
 app.use(cors());
 /******************* Middleware's ********************/
 app.use(morgan('combined'));
@@ -28,4 +32,4 @@ app.use('/api/v1/configuracion', verificarToken, routerConfiguracion)
 
 
 console.log('conectado')
-app.listen(3000);
+app.listen(process.env.PORT);
