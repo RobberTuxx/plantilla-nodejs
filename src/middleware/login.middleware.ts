@@ -3,7 +3,8 @@ import {generarToken, respuesta, status} from "../helpers/funcionesGenerales";
 import * as bcrypt from 'bcrypt';
 import {buscarUsuario} from "../models/usuario.model";
 import NexmoClass from "../Services/Nexmo";
-import {enviarWhatsappImagen, enviarWhatsappTexto} from "../Services/Vonage/VonageWhatsapp";
+import {enviarWhatsappTexto} from "../Services/Vonage/VonageWhatsapp";
+import {MensajeText} from "../Interfaces/Whastapp.Inteface";
 
 export async function logIn(request, response) {
     const errors = validationResult(request);
@@ -17,7 +18,9 @@ export async function logIn(request, response) {
             if (passwordValido) {
                 delete usuario.password
                 const nexmo = NexmoClass.getInstance()
-                enviarWhatsappImagen('5219515078041', '14157386170', 'https://lopezhernandezrobertobenjamin.bitbucket.io/slider.png')
+                const mensaje = {mensaje: 'que onda perro como estamos', destinatario:'5219515078041', remitente:'14157386170'} as MensajeText
+                const respuestaWhatsapp = await enviarWhatsappTexto(mensaje)
+                console.log('resss: ', respuestaWhatsapp.data)
                 return respuesta(response, status.success, `Bienvenido ${usuario.nombre + ' ' + usuario.apellidoPaterno}`, {
                     usuario,
                     token: generarToken(usuario)

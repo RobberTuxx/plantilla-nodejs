@@ -4,3 +4,8 @@ export function estatusMensaje(request, response){
     console.log('webhook: ', request.body)
     return respuesta(response, status.success, 'ok', {})
 }
+
+export function mensajeEntrante(request, response){
+    console.log('webhook: ', request.body)
+    return respuesta(response, status.success, 'ok', {})
+}

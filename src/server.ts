@@ -12,6 +12,7 @@ import {verificarToken} from "./middleware/verificarAutenticación";
 import {routerTelefonos} from "./routes/telefonoBloqueado.route";
 import {routerConfiguracion} from "./routes/configuracionEmpresa.route";
 import NexmoClass from "./Services/Nexmo";
+import {routerWebhook} from "./routes/webhooks.route";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/v1/login', routerLogin)
 app.use('/api/v1/empresa', verificarToken, routerEmpresa)
 app.use('/api/v1/telefono', verificarToken, routerTelefonos)
 app.use('/api/v1/configuracion', verificarToken, routerConfiguracion)
+app.use('/webhooks', routerWebhook)
 
 
 console.log('conectado')

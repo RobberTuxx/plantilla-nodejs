@@ -1,12 +1,20 @@
 import {Usuario} from "../entity/Usuario";
 import {Expo, ExpoPushTicket} from 'expo-server-sdk';
+// @ts-ignore
 import {ExpoPushMessage} from "expo-server-sdk/src/ExpoClient";
 
-export default class ExpoNotificaciones {
+class ExpoNotificaciones {
+    private static instance: ExpoNotificaciones;
     expo: Expo
 
     constructor() {
-        this.expo = new Expo()
+    }
+
+    public static getInstance(): ExpoNotificaciones {
+        if (!ExpoNotificaciones.instance) {
+            ExpoNotificaciones.instance = new ExpoNotificaciones()
+        }
+        return ExpoNotificaciones.instance
     }
 
     async notificarTodos(usuarios: Usuario[]) {
@@ -49,3 +57,5 @@ export default class ExpoNotificaciones {
         }
     }
 }
+
+export default ExpoNotificaciones

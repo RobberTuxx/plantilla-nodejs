@@ -30,8 +30,8 @@ export async function registrarUsuario(request, response) {
 export async function notificarTodosUsuarios(request, response) {
     try {
         const [usuarios, totalUsuarios] = await obtenerTodosRegistro()
-        const expoService = new ExpoNotificaciones()
-        await expoService.notificarTodos(usuarios)
+        const expo = ExpoNotificaciones.getInstance()
+        await expo.notificarTodos(usuarios)
         respuesta(response, 200, 'Notificacion enviada con exito', {})
     } catch (e) {
         respuesta(response, 500, 'Ocurrio un error inesperado', {error: e.toString()})
