@@ -4,17 +4,21 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
-    JoinColumn, JoinTable,
-    ManyToMany, ManyToOne,
-    PrimaryGeneratedColumn, Unique,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    Unique,
     UpdateDateColumn
 } from "typeorm";
 import {UsuarioInterface} from "../Interfaces/Usuario.Interface";
 import {Rol} from "./Rol";
 import {Empresa} from "./Empresa";
+import {Chat} from "./Chat";
 
 @Entity()
-@Unique('correo',['email'])
+@Unique('correo', ['email'])
 export class Usuario extends BaseEntity implements UsuarioInterface {
 
     @PrimaryGeneratedColumn()
@@ -36,8 +40,10 @@ export class Usuario extends BaseEntity implements UsuarioInterface {
     @ManyToMany(type => Rol)
     @JoinTable()
     rol: Rol[]
-    @ManyToOne(type => Empresa, empresa=> empresa.usuarios)
+    @ManyToOne(type => Empresa, empresa => empresa.usuarios)
     empresa: Empresa
+    @OneToMany(type => Chat, chat => chat.usuario)
+    chat: Chat[]
     @CreateDateColumn()
     createdAt: Date
     @UpdateDateColumn()

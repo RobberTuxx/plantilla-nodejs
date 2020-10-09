@@ -1,9 +1,10 @@
 import {Empresa} from "../entity/Empresa";
-import {guardarEmpresa} from "../models/empresa.model";
+import {buscarEmpresaId, guardarEmpresa} from "../models/empresa.model";
 import {respuesta, status} from "../helpers/funcionesGenerales";
 import {Usuario} from "../entity/Usuario";
 import {guardarUsuario} from "../models/usuario.model";
-import {Rol} from "../entity/Rol";
+import * as bcrypt from "bcrypt";
+import {buscarRol} from "../models/rol.model";
 
 export async function crearEmpresa(request, response) {
     const empresa = new Empresa(request.body)
@@ -16,11 +17,13 @@ export async function crearEmpresa(request, response) {
 }
 
 export async function agregarUsuarioEmpresa(request, response) {
-
     const usuario = new Usuario(request.body)
-    usuario.rol = [new Rol({id: 3})]
+    usuario.empresa = await buscarEmpresaId(request.empresaID)
+    usuario.password = await bcrypt.hash(usuario.password, 10)
+    usuario.rol = [await buscarRol(3)]
     try {
         const usuarioCreado = await guardarUsuario(usuario)
+        delete usuarioCreado.password
         return respuesta(response, status.created, 'Usuario creado con exito!', {usuario: usuarioCreado})
     } catch (e) {
         e.toString().includes('correo') ?

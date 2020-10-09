@@ -43,7 +43,7 @@ class Inicializacion {
                 usuarios: [
                     {
                         email: "karimnot@gmail.com",
-                        password:  await bcrypt.hash("temporal", 10),
+                        password: await bcrypt.hash("temporal", 10),
                         telefono: "9515078041",
                         nombre: "Karim",
                         apellidoPaterno: "Ricardez",

@@ -3,7 +3,8 @@ import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    Entity, JoinTable, ManyToMany,
+    Entity,
+    ManyToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
@@ -17,7 +18,6 @@ export class Rol extends BaseEntity {
     @Column()
     nombre: string
     @ManyToMany(type => Usuario)
-    @JoinTable()
     usuario: Usuario[]
     @CreateDateColumn()
     createdAt: Date
@@ -25,9 +25,10 @@ export class Rol extends BaseEntity {
     deletedAt: Date
     @UpdateDateColumn()
     updatedAt: Date
+
     constructor(rol?) {
         super();
-        if (rol){
+        if (rol) {
             this.id = rol.id
         }
     }
