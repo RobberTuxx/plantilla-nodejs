@@ -8,6 +8,7 @@ class ExpoNotificaciones {
     expo: Expo
 
     constructor() {
+        this.expo = new Expo()
     }
 
     public static getInstance(): ExpoNotificaciones {

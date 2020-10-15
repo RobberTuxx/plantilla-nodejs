@@ -5,6 +5,7 @@ import {buscarUsuario} from "../models/usuario.model";
 import NexmoClass from "../Services/Nexmo";
 import {enviarWhatsappTexto} from "../Services/Vonage/VonageWhatsapp";
 import {MensajeText} from "../Interfaces/Whastapp.Inteface";
+import {actualizarPushToken} from "../helpers/usuario.helper";
 
 export async function logIn(request, response) {
     const errors = validationResult(request);
@@ -16,11 +17,8 @@ export async function logIn(request, response) {
         if (usuario) {
             const passwordValido = await bcrypt.compare(request.body.password, usuario.password)
             if (passwordValido) {
+                await actualizarPushToken(usuario, request.body.pushToken)
                 delete usuario.password
-                const nexmo = NexmoClass.getInstance()
-                const mensaje = {mensaje: 'que onda perro como estamos', destinatario:'5219515078041', remitente:'14157386170'} as MensajeText
-                const respuestaWhatsapp = await enviarWhatsappTexto(mensaje)
-                console.log('resss: ', respuestaWhatsapp.data)
                 return respuesta(response, status.success, `Bienvenido ${usuario.nombre + ' ' + usuario.apellidoPaterno}`, {
                     usuario,
                     token: generarToken(usuario)

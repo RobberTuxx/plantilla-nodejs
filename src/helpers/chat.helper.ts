@@ -6,6 +6,7 @@ import {buscarEmpresaTelefono} from "../models/empresa.model";
 import {Conversacion} from "../entity/Conversacion";
 import {Usuario} from "../entity/Usuario";
 import ExpoNotificaciones from "./ExpoNotificaciones";
+import {io} from "../server";
 
 interface conteoChat {
     usuarioId: number
@@ -16,10 +17,12 @@ export async function crearChat(mensaje: WebhookInterface) {
     return new Promise(async (resolve, reject) => {
         try {
             const empresa = await buscarEmpresaTelefono(mensaje.to.number)
+            console.log('la empresa: ', empresa)
             const [usuarios, total] = await obtenerTodosUsuarios(empresa.id)
             if (total === 0){
                 return resolve('No hay usuarios activos')
             }
+            console.log('usuarios: ', usuarios)
             const chats = await conteoUsuariosChat(mensaje.to.number) as conteoChat[]
             const nuevoChat = await construirNuevoChat(mensaje)
             if (usuarios.length) {
@@ -29,7 +32,8 @@ export async function crearChat(mensaje: WebhookInterface) {
             }
             await guardarChat(nuevoChat)
             const expo = ExpoNotificaciones.getInstance()
-            await expo.notificarTelefono(nuevoChat.usuario, mensaje.message.content.text)
+           // await expo.notificarTelefono(nuevoChat.usuario, mensaje.message.content.text)
+
         } catch (e) {
             reject('Error: ' + e.toString())
         }
@@ -47,17 +51,21 @@ export function construirNuevoChat(mensaje: WebhookInterface): Chat {
     })
 }
 
-export async function crearConversacion(chatActivo: Chat, mensajeEntrante: WebhookInterface) {
+export async function crearConversacion(chatActivo: Chat, mensajeEntrante: string) {
     const expo = ExpoNotificaciones.getInstance()
     return new Promise(async (resolve, reject) =>{
         try{
+            console.log('usuario: ', chatActivo)
             const usuario = await buscarUsuarioID(chatActivo.usuario.id)
-            await Conversacion.create({
-                mensaje: mensajeEntrante.message.content.text,
+            const socketId = mensajeEntrante
+
+            const conversacion = await Conversacion.create({
+                mensaje: mensajeEntrante,
                 remitente: true,
                 chat: chatActivo
             }).save()
-            await expo.notificarTelefono(usuario, mensajeEntrante.message.content.text)
+            io.to(socketId).emit('hey', conversacion)
+            await expo.notificarTelefono(usuario, mensajeEntrante)
             resolve('Todo correcto')
         }catch (e) {
             reject('Error: ' + e.toString())

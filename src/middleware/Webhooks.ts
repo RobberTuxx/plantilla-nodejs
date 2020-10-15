@@ -12,9 +12,8 @@ export async function mensajeEntrante(request, response) {
     const mensajeEntrante = request.body as WebhookInterface
     try {
         const chatActivo = await buscarChatActivo(mensajeEntrante)
-        console.log('chat activo: ', chatActivo)
         chatActivo ?
-            await crearConversacion(chatActivo, mensajeEntrante) :
+            await crearConversacion(chatActivo, mensajeEntrante.message.content.text) :
             await crearChat(mensajeEntrante)
         return respuesta(response, status.created, 'mensaje guardado', {})
     } catch (e) {

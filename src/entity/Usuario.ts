@@ -37,6 +37,8 @@ export class Usuario extends BaseEntity implements UsuarioInterface {
     apellidoPaterno: string
     @Column()
     apellidoMaterno: string
+    @Column({nullable: true})
+    socketId: string
     @ManyToMany(type => Rol)
     @JoinTable()
     rol: Rol[]

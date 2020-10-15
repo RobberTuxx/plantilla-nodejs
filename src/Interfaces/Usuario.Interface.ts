@@ -5,4 +5,5 @@ export interface UsuarioInterface {
     pushToken: string
     telefono: string
     nombre: string
+    socketId: string
 }

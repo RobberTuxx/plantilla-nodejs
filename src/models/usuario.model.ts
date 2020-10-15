@@ -1,5 +1,5 @@
 import {Usuario} from "../entity/Usuario";
-import {getRepository} from "typeorm";
+import {getRepository, UpdateResult} from "typeorm";
 
 export function buscarUsuario(email: string): Promise<Usuario | undefined> {
     return Usuario.findOne({where: {email}, relations: ["rol", "empresa"]})
@@ -8,15 +8,20 @@ export function buscarUsuario(email: string): Promise<Usuario | undefined> {
 export function buscarUsuarioID(id: number): Promise<Usuario | undefined> {
     return Usuario.findOne({where: {id}})
 }
+
 export function guardarUsuario(usuario: Usuario): Promise<Usuario> {
     return usuario.save()
 }
 
-export function obtenerTodosUsuarios(empresaId: number){
+export function obtenerTodosUsuarios(empresaId: number) {
     return getRepository(Usuario).createQueryBuilder('usuario')
         .leftJoinAndSelect('usuario.rol', 'rol')
         .where('usuario.empresa = :empresaId', {empresaId})
         .andWhere('usuario.pushToken is not null')
-        .andWhere('rol.id = :id',{id: 3})
+        .andWhere('rol.id = :id', {id: 3})
         .getManyAndCount()
+}
+
+export function actualizarUsuario(usuario: Usuario): Promise<UpdateResult> {
+    return getRepository(Usuario).update(usuario.id, usuario)
 }

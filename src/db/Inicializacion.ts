@@ -52,7 +52,7 @@ class Inicializacion {
                     }
                 ],
                 configuracionEmpresa: {
-                    whatsapp: "9515078041",
+                    whatsapp: "14157386170",
                     mensajesComprados: 50
                 }
             }).save()
