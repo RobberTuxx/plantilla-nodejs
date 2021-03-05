@@ -14,7 +14,7 @@ import NexmoClass from "./Services/Nexmo";
 import {routerWebhook} from "./routes/webhooks.route"
 import * as http from "http";
 import * as socket from 'socket.io';
-import {usuarioSocket} from "./middleware/socket.middleware";
+import {desconexionUsuario, usuarioSocket} from "./middleware/socket.middleware";
 
 dotenv.config();
 
@@ -35,7 +35,8 @@ io.on('connection', async (socket1) => {
     socket1.on('message', mensaje => {
         socket1.send('llego tu mensaje perro')
     })
-    socket1.on('disconnect', reason => {
+    socket1.on('disconnect', usuarioId=> {
+        desconexionUsuario(usuarioId)
         socket1.disconnect(true)
     })
     console.log('sockets: ', socket1.id)
